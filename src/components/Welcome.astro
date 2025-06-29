@@ -220,17 +220,9 @@
           kirbyY -= kirbySpeed;
           kirby.style.top = `${kirbyY}px`;
         }
-      }
-
-      if (direction === "STILL") {
-        startAnimation(direction);
-        kirby.style.backgroundPosition = frames.STILL[0];
-      } else if (reverseDirections.some((d) => direction === d)) {
-        kirby.style.transform = "scaleX(-1)";
-        startAnimation(direction);
       } else {
-        kirby.style.transform = "scaleX(1)";
-        startAnimation(direction);
+        startAnimation("STILL");
+        kirby.style.backgroundPosition = frames.STILL[0];
       }
 
       callback(direction);
