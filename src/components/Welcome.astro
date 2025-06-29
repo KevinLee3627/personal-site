@@ -1,0 +1,211 @@
+<style>
+  body {
+    /* NOTE: From MDN, regarding cursor property: 
+      A url() or a comma separated list url(), url(), …, pointing to an image file. More than one <url> may be provided as fallbacks, in case some cursor image types are not supported. 
+      A non-URL fallback (one or more of the keyword values) must be at the end of the fallback list.
+    */
+  }
+
+  #kirby {
+    height: 32px;
+    width: 32px;
+    background-image: url('/char_black.png');
+    background-size: 512px;
+    position: absolute;
+  }
+</style>
+
+<script>
+
+
+  const body = document.querySelector('body');
+  if (body == null) throw new Error ('no body??');
+
+
+  type Direction = 'N'| 'NE'| 'E'| 'SE'| 'S'| 'SW'| 'W'| 'NW'| 'STILL';
+
+  const frames: Record<Direction, string[]> = {
+    N: [
+      '0px -224px',
+      '-32px -224px',
+      '-64px -224px',
+      '-96px -224px',
+      '-128px -224px',
+      '-160px -224px',
+      '-192px -224px',
+      '-224px -224px',
+      '-256px -224px',
+      '-288px -224px',
+    ],
+    NE: [
+      '-64px -288px',
+      '-96px -288px',
+      '-128px -288px',
+      '-160px -288px',
+      '-192px -288px',
+      '-224px -288px',
+      '-256px -288px',      
+    ],
+    E: [
+      '-32px 0px',
+      '-64px 0px',
+      '-96px 0px',
+      '-128px 0px',
+      '-160px 0px',
+      '-192px 0px',
+      '-224px 0px',
+      '-256px 0px',
+    ],
+    SE: [
+      '-64px -288px',
+      '-96px -288px',
+      '-128px -288px',
+      '-160px -288px',
+      '-192px -288px',
+      '-224px -288px',
+      '-256px -288px',      
+    ],
+    S: [
+      '-320px -0px',
+      '-352px -0px',
+      '-384px -0px',
+      '-416px -0px',
+      '-448px -0px',
+      '-480px -0px',
+    ],
+    SW: [ // same as SE
+      '-64px -288px',
+      '-96px -288px',
+      '-128px -288px',
+      '-160px -288px',
+      '-192px -288px',
+      '-224px -288px',
+      '-256px -288px',      
+    ],
+    W: [ // same as E
+      '-32px 0px',
+      '-64px 0px',
+      '-96px 0px',
+      '-128px 0px',
+      '-160px 0px',
+      '-192px 0px',
+      '-224px 0px',
+      '-256px 0px',
+    ],
+    NW: [ // same as NE
+      '-64px -288px',
+      '-96px -288px',
+      '-128px -288px',
+      '-160px -288px',
+      '-192px -288px',
+      '-224px -288px',
+      '-256px -288px',      
+    ],
+    STILL: ['-288px 0px'],
+  };
+
+  let animFrame = 0;
+  let animating = false;
+  let animInterval: NodeJS.Timeout | null = null;
+  let currentDirection: Direction = 'STILL';
+
+  function startAnimation(direction: Direction) {
+    // The function starts an interval/loop if the direction changes and animation is 'enabled'.
+    // This first check says - if we're currently animating and the direction hasn't changed, we don't need
+    // to start a fresh animation in a new direction, just keep the current loop going!
+    if (animating && currentDirection === direction) return;
+
+    // Stop the currently playing animation
+    stopAnimation();
+    currentDirection = direction;
+    animating = true;
+    const dirFrames = frames[direction];
+    animFrame = 0;
+
+    const kirby = document.getElementById('kirby');
+    if (kirby == null) throw new Error('no kirby D:');
+
+    animInterval = setInterval(() => {
+      kirby.style.backgroundPosition = dirFrames[animFrame];
+      animFrame = (animFrame + 1) % dirFrames.length;
+    }, 100);
+  }
+
+  function stopAnimation() {
+    if (!animating) return;
+    animating = false;
+    if (animInterval !== null) clearInterval(animInterval);
+    animInterval = null;
+    animFrame = 0;
+  }
+
+  const reverseDirections: Direction[] = ['W', "NW", "SW"]
+
+  function trackCursorDirection(intervalMs: number, callback: (dir: Direction) => void) {
+    let lastX = 0;
+    let lastY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    const threshold = 2; // Minimum movement to be considered "moving"
+
+    function getDirection(dx: number, dy: number): Direction {
+      if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return 'STILL';
+
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+      if (angle >= -22.5 && angle < 22.5) return 'E';
+      if (angle >= 22.5 && angle < 67.5) return 'SE';
+      if (angle >= 67.5 && angle < 112.5) return 'S';
+      if (angle >= 112.5 && angle < 157.5) return 'SW';
+      if (angle >= 157.5 || angle < -157.5) return 'W';
+      if (angle >= -157.5 && angle < -112.5) return 'NW';
+      if (angle >= -112.5 && angle < -67.5) return 'N';
+      if (angle >= -67.5 && angle < -22.5) return 'NE';
+
+      return 'STILL';
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      currentX = e.clientX;
+      currentY = e.clientY;
+
+    });
+
+    setInterval(() => {
+      const dx = currentX - lastX;
+      const dy = currentY - lastY;
+      const direction = getDirection(dx, dy);
+
+      const kirby = document.getElementById('kirby');
+      if (kirby == null) throw new Error('no kirby D:');
+      
+      kirby.style.left = `${currentX - 32}px`;
+      kirby.style.top = `${currentY}px`
+      
+      callback(direction);
+
+      lastX = currentX;
+      lastY = currentY;
+    }, intervalMs);
+  }
+
+
+  trackCursorDirection(33, (direction) => {
+    const kirby = document.getElementById('kirby');
+    if (kirby == null) throw new Error('no kirby D:');
+    if (direction === 'STILL') {
+      stopAnimation();
+      kirby.style.backgroundPosition = frames.STILL[0];
+    } else if (reverseDirections.some(d => direction === d)){
+      kirby.style.transform = 'scaleX(-1)';
+      startAnimation(direction);
+    } else {
+      kirby.style.transform = 'scaleX(1)';
+      startAnimation(direction)
+    }
+  });
+</script>
+
+  <div id="kirby"></div>
+
