@@ -55,7 +55,6 @@
       "-512px 0px",
     ],
     SE: [
-      "-128px -576px",
       "-192px -576px",
       "-256px -576px",
       "-320px -576px",
@@ -73,7 +72,6 @@
     ],
     SW: [
       // same as SE
-      "-128px -576px",
       "-192px -576px",
       "-256px -576px",
       "-320px -576px",
@@ -102,7 +100,7 @@
       "-448px -576px",
       "-512px -576px",
     ],
-    STILL: ["-576px 0px", "-640px 0px"],
+    STILL: ["-576px 0px"],
   };
 
   let animFrame = 0;
@@ -150,6 +148,9 @@
     let lastY = 0;
     let currentX = 0;
     let currentY = 0;
+    let kirbyX = 0;
+    let kirbyY = 0;
+    let kirbySpeed = 10;
 
     const threshold = 2; // Minimum movement to be considered "moving"
 
@@ -183,8 +184,29 @@
       const kirby = document.getElementById("kirby");
       if (kirby == null) throw new Error("no kirby D:");
 
-      kirby.style.left = `${currentX - 64}px`;
-      kirby.style.top = `${currentY}px`;
+      const kirbyToCursorDx = kirbyX - currentX;
+      const kirbyToCursorDy = kirbyY - currentY;
+      const distanceToCursor = Math.sqrt(
+        kirbyToCursorDx * kirbyToCursorDx + kirbyToCursorDy * kirbyToCursorDy,
+      );
+      console.log(distanceToCursor);
+      if (distanceToCursor > 64) {
+        if (kirbyX < currentX) {
+          kirbyX += kirbySpeed;
+          kirby.style.left = `${kirbyX}px`;
+        } else if (kirbyX > currentX) {
+          kirbyX -= kirbySpeed;
+          kirby.style.left = `${kirbyX}px`;
+        }
+
+        if (kirbyY < currentY) {
+          kirbyY += kirbySpeed;
+          kirby.style.top = `${kirbyY}px`;
+        } else if (kirbyY > currentY) {
+          kirbyY -= kirbySpeed;
+          kirby.style.top = `${kirbyY}px`;
+        }
+      }
 
       callback(direction);
 
