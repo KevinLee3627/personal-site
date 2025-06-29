@@ -7,101 +7,100 @@
   }
 
   #kirby {
-    height: 32px;
-    width: 32px;
+    height: 64px;
+    width: 64px;
     background-image: url('/char_black.png');
-    background-size: 512px;
+    background-size: 1024px;
     position: absolute;
   }
 </style>
 
 <script>
-
-
   const body = document.querySelector('body');
   if (body == null) throw new Error ('no body??');
 
 
   type Direction = 'N'| 'NE'| 'E'| 'SE'| 'S'| 'SW'| 'W'| 'NW'| 'STILL';
 
+  // All frame positions doubled for 64px sprite size
   const frames: Record<Direction, string[]> = {
     N: [
-      '0px -224px',
-      '-32px -224px',
-      '-64px -224px',
-      '-96px -224px',
-      '-128px -224px',
-      '-160px -224px',
-      '-192px -224px',
-      '-224px -224px',
-      '-256px -224px',
-      '-288px -224px',
+      '0px -448px',
+      '-64px -448px',
+      '-128px -448px',
+      '-192px -448px',
+      '-256px -448px',
+      '-320px -448px',
+      '-384px -448px',
+      '-448px -448px',
+      '-512px -448px',
+      '-576px -448px',
     ],
     NE: [
-      '-64px -288px',
-      '-96px -288px',
-      '-128px -288px',
-      '-160px -288px',
-      '-192px -288px',
-      '-224px -288px',
-      '-256px -288px',      
+      '-128px -576px',
+      '-192px -576px',
+      '-256px -576px',
+      '-320px -576px',
+      '-384px -576px',
+      '-448px -576px',
+      '-512px -576px',      
     ],
     E: [
-      '-32px 0px',
       '-64px 0px',
-      '-96px 0px',
       '-128px 0px',
-      '-160px 0px',
       '-192px 0px',
-      '-224px 0px',
       '-256px 0px',
+      '-320px 0px',
+      '-384px 0px',
+      '-448px 0px',
+      '-512px 0px',
     ],
     SE: [
-      '-64px -288px',
-      '-96px -288px',
-      '-128px -288px',
-      '-160px -288px',
-      '-192px -288px',
-      '-224px -288px',
-      '-256px -288px',      
+      '-128px -576px',
+      '-192px -576px',
+      '-256px -576px',
+      '-320px -576px',
+      '-384px -576px',
+      '-448px -576px',
+      '-512px -576px',      
     ],
     S: [
-      '-320px -0px',
-      '-352px -0px',
-      '-384px -0px',
-      '-416px -0px',
-      '-448px -0px',
-      '-480px -0px',
+      '-640px 0px',
+      '-704px 0px',
+      '-768px 0px',
+      '-832px 0px',
+      '-896px 0px',
+      '-960px 0px',
     ],
     SW: [ // same as SE
-      '-64px -288px',
-      '-96px -288px',
-      '-128px -288px',
-      '-160px -288px',
-      '-192px -288px',
-      '-224px -288px',
-      '-256px -288px',      
+      '-128px -576px',
+      '-192px -576px',
+      '-256px -576px',
+      '-320px -576px',
+      '-384px -576px',
+      '-448px -576px',
+      '-512px -576px',      
     ],
     W: [ // same as E
-      '-32px 0px',
       '-64px 0px',
-      '-96px 0px',
       '-128px 0px',
-      '-160px 0px',
       '-192px 0px',
-      '-224px 0px',
       '-256px 0px',
+      '-320px 0px',
+      '-384px 0px',
+      '-448px 0px',
+      '-512px 0px',
     ],
     NW: [ // same as NE
-      '-64px -288px',
-      '-96px -288px',
-      '-128px -288px',
-      '-160px -288px',
-      '-192px -288px',
-      '-224px -288px',
-      '-256px -288px',      
+      '-128px -576px',
+      '-192px -576px',
+      '-256px -576px',
+      '-320px -576px',
+      '-384px -576px',
+      '-448px -576px',
+      '-512px -576px',      
     ],
-    STILL: ['-288px 0px'],
+    STILL: ['-576px 0px'],
   };
 
   let animFrame = 0;
@@ -180,7 +179,7 @@
       const kirby = document.getElementById('kirby');
       if (kirby == null) throw new Error('no kirby D:');
       
-      kirby.style.left = `${currentX - 32}px`;
+      kirby.style.left = `${currentX - 64}px`;
       kirby.style.top = `${currentY}px`
       
       callback(direction);
@@ -207,5 +206,5 @@
   });
 </script>
 
-  <div id="kirby"></div>
+<div id="kirby"></div>
 
