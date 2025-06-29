@@ -203,7 +203,8 @@
           startAnimation(direction);
         }
 
-        if (kirbyX < cursorCurrentX) {
+        // NOTE: kirbySpeed is subtracted to avoid same issue as below
+        if (kirbyX < cursorCurrentX - kirbySpeed) {
           kirbyX += kirbySpeed;
           kirby.style.left = `${kirbyX}px`;
         } else if (kirbyX > cursorCurrentX) {
