@@ -144,10 +144,10 @@
     intervalMs: number,
     callback: (dir: Direction) => void,
   ) {
-    let lastX = 0;
-    let lastY = 0;
-    let currentX = 0;
-    let currentY = 0;
+    let cursorLastX = 0;
+    let cursorLastY = 0;
+    let cursorCurrentX = 0;
+    let cursorCurrentY = 0;
     let kirbyX = 0;
     let kirbyY = 0;
     let kirbySpeed = 8;
@@ -172,65 +172,75 @@
     }
 
     window.addEventListener("mousemove", (e) => {
-      currentX = e.clientX;
-      currentY = e.clientY;
+      cursorCurrentX = e.clientX;
+      cursorCurrentY = e.clientY;
     });
 
+    const kirby = document.getElementById("kirby");
+    if (kirby == null) throw new Error("no kirby D:");
+
     setInterval(() => {
-      const dx = currentX - lastX;
-      const dy = currentY - lastY;
-      const direction = getDirection(dx, dy);
+      const cursorDx = cursorCurrentX - kirbyX;
+      const cursorDy = cursorCurrentY - kirbyY;
+      const direction = getDirection(cursorDx, cursorDy);
 
-      const kirby = document.getElementById("kirby");
-      if (kirby == null) throw new Error("no kirby D:");
-
-      const kirbyToCursorDx = kirbyX - currentX;
-      const kirbyToCursorDy = kirbyY - currentY;
+      const kirbyToCursorDx = kirbyX - cursorCurrentX;
+      const kirbyToCursorDy = kirbyY - cursorCurrentY;
       const distanceToCursor = Math.sqrt(
         kirbyToCursorDx * kirbyToCursorDx + kirbyToCursorDy * kirbyToCursorDy,
       );
 
+      // Make kirby move to the cursor!
       if (distanceToCursor > 64) {
-        if (kirbyX < currentX) {
+        if (direction === "STILL") {
+          startAnimation(direction);
+          kirby.style.backgroundPosition = frames.STILL[0];
+        } else if (reverseDirections.some((d) => direction === d)) {
+          kirby.style.transform = "scaleX(-1)";
+          startAnimation(direction);
+        } else {
+          kirby.style.transform = "scaleX(1)";
+          startAnimation(direction);
+        }
+
+        if (kirbyX < cursorCurrentX) {
           kirbyX += kirbySpeed;
           kirby.style.left = `${kirbyX}px`;
-        } else if (kirbyX > currentX) {
+        } else if (kirbyX > cursorCurrentX) {
           kirbyX -= kirbySpeed;
           kirby.style.left = `${kirbyX}px`;
         }
 
         // Subtract the speed here to fix a 'jittering' issue. kirbyY would constantly flip back and forth between being below and above currentY.
         // By adding a 'cushion' or 'threshold' of the speed value, we stop the jitter.
-        if (kirbyY < currentY - kirbySpeed) {
+        if (kirbyY < cursorCurrentY - kirbySpeed) {
           kirbyY += kirbySpeed;
           kirby.style.top = `${kirbyY}px`;
-        } else if (kirbyY > currentY) {
+        } else if (kirbyY > cursorCurrentY) {
           kirbyY -= kirbySpeed;
           kirby.style.top = `${kirbyY}px`;
         }
       }
 
+      if (direction === "STILL") {
+        startAnimation(direction);
+        kirby.style.backgroundPosition = frames.STILL[0];
+      } else if (reverseDirections.some((d) => direction === d)) {
+        kirby.style.transform = "scaleX(-1)";
+        startAnimation(direction);
+      } else {
+        kirby.style.transform = "scaleX(1)";
+        startAnimation(direction);
+      }
+
       callback(direction);
 
-      lastX = currentX;
-      lastY = currentY;
+      cursorLastX = cursorCurrentX;
+      cursorLastY = cursorCurrentY;
     }, intervalMs);
   }
 
-  trackCursorDirection(33, (direction) => {
-    const kirby = document.getElementById("kirby");
-    if (kirby == null) throw new Error("no kirby D:");
-    if (direction === "STILL") {
-      startAnimation(direction);
-      kirby.style.backgroundPosition = frames.STILL[0];
-    } else if (reverseDirections.some((d) => direction === d)) {
-      kirby.style.transform = "scaleX(-1)";
-      startAnimation(direction);
-    } else {
-      kirby.style.transform = "scaleX(1)";
-      startAnimation(direction);
-    }
-  });
+  trackCursorDirection(33, (direction) => {});
 </script>
 
 <div id="kirby"></div>
