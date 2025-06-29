@@ -150,7 +150,7 @@
     let currentY = 0;
     let kirbyX = 0;
     let kirbyY = 0;
-    let kirbySpeed = 10;
+    let kirbySpeed = 8;
 
     const threshold = 2; // Minimum movement to be considered "moving"
 
@@ -189,7 +189,7 @@
       const distanceToCursor = Math.sqrt(
         kirbyToCursorDx * kirbyToCursorDx + kirbyToCursorDy * kirbyToCursorDy,
       );
-      console.log(distanceToCursor);
+
       if (distanceToCursor > 64) {
         if (kirbyX < currentX) {
           kirbyX += kirbySpeed;
@@ -199,7 +199,9 @@
           kirby.style.left = `${kirbyX}px`;
         }
 
-        if (kirbyY < currentY) {
+        // Subtract the speed here to fix a 'jittering' issue. kirbyY would constantly flip back and forth between being below and above currentY.
+        // By adding a 'cushion' or 'threshold' of the speed value, we stop the jitter.
+        if (kirbyY < currentY - kirbySpeed) {
           kirbyY += kirbySpeed;
           kirby.style.top = `${kirbyY}px`;
         } else if (kirbyY > currentY) {
