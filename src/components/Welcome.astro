@@ -16,9 +16,6 @@
 </style>
 
 <script>
-  const body = document.querySelector("body");
-  if (body == null) throw new Error("no body??");
-
   type Direction = "N" | "NE" | "E" | "SE" | "S" | "SW" | "W" | "NW" | "STILL";
 
   // All frame positions doubled for 64px sprite size
@@ -152,7 +149,7 @@
     let kirbyY = 0;
     let kirbySpeed = 8;
 
-    const threshold = 2; // Minimum movement to be considered "moving"
+    const threshold = 1; // Minimum movement to be considered "moving"
 
     function getDirection(dx: number, dy: number): Direction {
       if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return "STILL";
@@ -191,7 +188,7 @@
       );
 
       // Make kirby move to the cursor!
-      if (distanceToCursor > 64) {
+      if (distanceToCursor > 80) {
         if (direction === "STILL") {
           startAnimation(direction);
           kirby.style.backgroundPosition = frames.STILL[0];
