@@ -1,0 +1,25 @@
+---
+import type { MarkdownLayoutProps } from "astro";
+import Layout from "./Layout.astro";
+
+type Props = MarkdownLayoutProps<{
+  // Define frontmatter props here
+  title: string;
+  author: string;
+  date: string;
+}>;
+
+// Now, `frontmatter`, `url`, and other Markdown layout properties
+// are accessible with type safety
+const { frontmatter, url } = Astro.props;
+---
+
+<Layout>
+  <article>
+    <h1>
+      {frontmatter.title}
+      <slot />
+      <p>Written on: {frontmatter.date}</p>
+    </h1>
+  </article>
+</Layout>
