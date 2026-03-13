@@ -1,5 +1,8 @@
 ---
 import "../styles/normalize.css";
+
+const pathname = Astro.url.pathname;
+const segments = pathname.split("/").filter(Boolean);
 ---
 
 <html lang="en">
@@ -37,11 +40,48 @@ import "../styles/normalize.css";
         font-size: 2rem;
         font-weight: 700;
       }
+
+      .headerNav {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .separator {
+        font-size: 2rem;
+      }
+
+      .breadcrumb {
+        font-size: 2rem;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+      }
+
+      .breadcrumb:hover {
+        color: white;
+        text-decoration: underline;
+      }
     </style>
   </head>
   <body>
     <header>
-      <a href="/" class="headerLink">kevin's website</a>
+      <nav class="headerNav">
+        <a href="/" class="headerLink">kevin's website</a>
+        {
+          segments.map((seg, i) => {
+            const href = "/" + segments.slice(0, i + 1).join("/");
+            return (
+              <>
+                <span class="separator">/</span>
+                <a href={href} class="breadcrumb">
+                  {seg}
+                </a>
+              </>
+            );
+          })
+        }
+      </nav>
     </header>
     <main>
       <slot />

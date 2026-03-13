@@ -16,9 +16,7 @@ const { frontmatter, url } = Astro.props;
 
 <Layout>
   <article>
-    <h1>
-      {frontmatter.title}
-      <slot />
-    </h1>
+    <h1>{frontmatter.title}</h1>
+    <slot />
   </article>
 </Layout>
