@@ -19,7 +19,6 @@ const { frontmatter, url } = Astro.props;
     <h1>
       {frontmatter.title}
       <slot />
-      <p>Written on: {frontmatter.date}</p>
     </h1>
   </article>
 </Layout>
