@@ -1,0 +1,50 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection("baking");
+  const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags))];
+
+  return allTags.map((tag) => ({
+    params: { tag },
+    props: {
+      posts: allPosts.filter((post) => post.data.tags.includes(tag)),
+    },
+  }));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<style>
+  .postContainer {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+</style>
+
+<Layout>
+  <h1>tag: {tag}</h1>
+  <div class="postContainer">
+    {
+      posts
+        .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+        .map((post) => (
+          <div>
+            <a href={`/baking/${post.id}`}>{post.data.title}</a>
+            <p>
+              <time datetime={`${post.data.date}`}>
+                {post.data.date.toLocaleDateString("en-US", {
+                  dateStyle: "long",
+                })}
+              </time>
+            </p>
+          </div>
+        ))
+    }
+  </div>
+</Layout>

@@ -30,7 +30,16 @@ const allBlogPosts = await getCollection("baking");
                 })}
               </time>
             </p>
-            <p>tags: {post.data.tags.join(", ")}</p>
+            {/* <p>tags: {post.data.tags.join(", ")}</p> */}
+            <p>
+              tags:{" "}
+              {post.data.tags.map((tag, i) => (
+                <>
+                  <a href={`/baking/tag/${tag}`}>{tag}</a>
+                  {i < post.data.tags.length - 1 ? ", " : ""}
+                </>
+              ))}
+            </p>
           </div>
         ))
     }

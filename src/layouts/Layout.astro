@@ -99,7 +99,7 @@ const segments = pathname.split("/").filter(Boolean);
               <>
                 <span class="separator">/</span>
                 <a href={href} class="breadcrumb">
-                  {seg}
+                  {decodeURIComponent(seg)}
                 </a>
               </>
             );
