@@ -5,7 +5,7 @@ date: Feb 26, 2025
 tags: ["baklava", "proverbs"]
 ---
 
-![baklava!](/src/assets/baking/baklava.webp)
+![baklava!](/src/assets/baking/baklava/baklava.webp)
 
 ## things i learned
 
