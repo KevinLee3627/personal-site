@@ -68,6 +68,24 @@ const segments = pathname.split("/").filter(Boolean);
         color: white;
         text-decoration: underline;
       }
+
+      ol,
+      ul {
+        margin: 1rem;
+        padding-left: 0;
+        list-style-position: inside;
+      }
+
+      ol > li {
+        list-style-type: decimal-leading-zero;
+        padding-left: 2.5rem;
+        text-indent: -2.5rem;
+      }
+      ul > li {
+        list-style-type: disc;
+        padding-left: 1rem;
+        text-indent: -1rem;
+      }
     </style>
   </head>
   <body>

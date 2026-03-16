@@ -15,8 +15,8 @@ const { Content } = await render(post);
 const { title, subtitle, date } = post.data;
 ---
 
-<style>
-  :global(img) {
+<style is:global>
+  img {
     max-width: 100%;
     display: block;
     margin: 0 auto;
@@ -26,14 +26,19 @@ const { title, subtitle, date } = post.data;
     max-width: 80ch;
   }
 
+  article p {
+    margin-bottom: 1rem;
+  }
+
   @media (min-width: 768px) {
     article {
       margin: 0 auto;
     }
   }
 </style>
+
 <Layout>
-  <article style="border: 1px solid black">
+  <article>
     <h1>{title}</h1>
     <h2>{subtitle}</h2>
     <time>{date}</time>
