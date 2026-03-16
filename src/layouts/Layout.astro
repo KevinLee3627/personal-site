@@ -18,7 +18,7 @@ const segments = pathname.split("/").filter(Boolean);
     />
     <meta name="generator" content={Astro.generator} />
     <title>^_^ hello ^_^</title>
-    <style>
+    <style is:global>
       html,
       body {
         margin: 0;
@@ -33,8 +33,14 @@ const segments = pathname.split("/").filter(Boolean);
       header,
       main {
         padding: 1rem;
+        max-width: 1080px;
       }
-
+      @media (min-width: 768px) {
+        header,
+        main {
+          margin: 0 auto;
+        }
+      }
       .headerLink {
         text-decoration: none;
         font-size: 2rem;

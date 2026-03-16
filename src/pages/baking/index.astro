@@ -1,10 +1,20 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { getCollection, getEntry } from "astro:content";
+
+const allBlogPosts = await getCollection("baking");
 ---
 
 <Layout>
   <h1>stuff i've baked</h1>
   <ul>
-    <li><a href="/baking/baklava">baklava</a></li>
+    {
+      allBlogPosts.map((post) => (
+        <li>
+          <a href={`/baking/${post.id}`}>{post.data.title}</a>
+          <p>tags: {post.data.tags.join(", ")}</p>
+        </li>
+      ))
+    }
   </ul>
 </Layout>
