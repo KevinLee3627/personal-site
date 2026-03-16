@@ -5,16 +5,34 @@ import { getCollection, getEntry } from "astro:content";
 const allBlogPosts = await getCollection("baking");
 ---
 
+<style>
+  .postContainer {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+</style>
+
 <Layout>
   <h1>stuff i've baked</h1>
-  <ul>
+  <div class="postContainer">
     {
-      allBlogPosts.map((post) => (
-        <li>
-          <a href={`/baking/${post.id}`}>{post.data.title}</a>
-          <p>tags: {post.data.tags.join(", ")}</p>
-        </li>
-      ))
+      allBlogPosts
+        .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+        .map((post) => (
+          <div>
+            <a href={`/baking/${post.id}`}>{post.data.title}</a>
+            <p>
+              <time datetime={`${post.data.date}`}>
+                {post.data.date.toLocaleDateString(navigator.languages, {
+                  dateStyle: "long",
+                })}
+              </time>
+            </p>
+            <p>tags: {post.data.tags.join(", ")}</p>
+          </div>
+        ))
     }
-  </ul>
+  </div>
 </Layout>

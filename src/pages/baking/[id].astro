@@ -41,7 +41,13 @@ const { title, subtitle, date } = post.data;
   <article>
     <h1>{title}</h1>
     <h2>{subtitle}</h2>
-    <time>{date}</time>
+    <time datetime={new Date(date).toISOString()}
+      >{
+        date.toLocaleDateString(navigator.languages, {
+          dateStyle: "long",
+        })
+      }</time
+    >
     <Content />
   </article>
 </Layout>
