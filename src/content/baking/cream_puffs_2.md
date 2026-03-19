@@ -1,5 +1,5 @@
 ---
-title: creamed again
+title: cream of nothing two-p
 date: April 14, 2025
 tags: ["cream puffs", "choux pastry"]
 ---
@@ -8,4 +8,4 @@ attempt #2, three days later. after improving piping technique and a whole host 
 
 ![cream puffs](/src/assets/baking/cream_puffs_2/IMG_8591.webp)
 
-things ended up a _little_ better - but not by much. need to cream again at some point to really get it down
+things ended up a _little_ better - but not by much. need to cream puff again at some point to really get it down

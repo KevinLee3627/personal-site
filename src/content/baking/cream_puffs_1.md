@@ -1,5 +1,5 @@
 ---
-title: creamed
+title: cream of nothing soup
 date: April 11, 2025
 tags: ["cream puffs", "choux pastry"]
 ---
