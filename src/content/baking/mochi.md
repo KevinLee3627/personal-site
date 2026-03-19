@@ -1,9 +1,14 @@
 ---
 title: hell is doing the same thing over and over again and getting marginally better results
 date: March 12, 2025
-tags: ["mochi", "einstein", "sartre"]
+tags: ["mochi", "mango"]
 ---
 
-attempt #2, three days later. after improving piping technique and a whole host of other things...
+## making mango mochi
 
-![cream puffs](/src/assets/baking/cream_puffs_2/IMG_8591.webp)
+i hated this
+
+<details>
+<summary>read more</summary>
+see above
+</details>

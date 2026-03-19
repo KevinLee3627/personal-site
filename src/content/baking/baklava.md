@@ -2,7 +2,7 @@
 title: a journey of a thousand steps starts with the first step that you take, continues with nine hundred and ninety eight steps, and concludes with the thousandth step
 subtitle: and more proverbs
 date: Feb 26, 2025
-tags: ["baklava", "proverbs"]
+tags: ["baklava"]
 ---
 
 ![baklava!](/src/assets/baking/baklava/baklava.webp)
