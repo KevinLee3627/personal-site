@@ -1,7 +1,7 @@
 ---
 title: cream of nothing two-p
 date: April 14, 2025
-tags: ["cream puffs", "choux pastry"]
+tags: ["cream puffs", "choux pastry", "cream of nothing...two-p"]
 ---
 
 attempt #2, three days later. after improving piping technique and a whole host of other things...

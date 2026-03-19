@@ -1,7 +1,7 @@
 ---
 title: hell is doing the same thing over and over again and getting marginally better results
 date: March 12, 2025
-tags: ["mochi", "mango"]
+tags: ["mochi", "mango", "einstein", "sartre"]
 ---
 
 ## making mango mochi
