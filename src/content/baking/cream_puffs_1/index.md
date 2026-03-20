@@ -8,6 +8,6 @@ for my second-ever baking project (and by suggestion from a friend), i attempted
 
 for all the direction the recipe gave about choux pastry...the outcome was not what i was hoping for. i blame the oven
 
-![cream puffs](/src/assets/baking/cream_puffs_1/IMG_3502.webp)
+![cream puffs](./IMG_3502.webp)
 
-![filled cream puff](/src/assets/baking/cream_puffs_1/IMG_3503.webp)
+![filled cream puff](./IMG_3503.webp)
