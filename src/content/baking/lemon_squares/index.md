@@ -1,5 +1,5 @@
 ---
-title: lemon squares
+title: all work no pay
 date: August 11, 2025
 tags: ["lemon squares", "mint"]
 ---
