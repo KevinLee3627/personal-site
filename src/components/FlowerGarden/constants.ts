@@ -1,7 +1,7 @@
 export const STEM = {
   COLORS: { STEM: "#2ACF3B" },
   WIDTH: { MIN: 2, MAX: 2 },
-  HEIGHT: { MIN: 30, MAX: 60 },
+  HEIGHT: { MIN: 40, MAX: 70 },
 };
 
 export const LEAF = {

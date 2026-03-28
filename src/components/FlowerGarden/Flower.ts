@@ -38,8 +38,6 @@ class Leaf {
     this.colorMap = colorMap;
     this.ctx = ctx;
   }
-
-  public draw() {}
 }
 
 export class Flower {
@@ -98,13 +96,21 @@ export class Flower {
   }
 
   private generateLeaves(amt: number, leafStyles: Bitmap[]) {
-    for (let i = 0; i <= amt; i++) {
+    // STOP FORGETTING NUMBERS ARE NEGATIVE...CANVAS!!!
+    const minY = Math.floor(-this.stemHeight * 0.25);
+    const maxY = Math.floor(-this.stemHeight * 0.9);
+    const slotHeight = Math.floor(Math.abs((maxY - minY) / amt));
+    for (let i = 0; i < amt; i++) {
+      // How do we make sure leaves are not too close to each other?
+      // Guarantee space between leaves
+      // Something like sequencer project - 'quantize' spots a leaf can go
       const leafStyle = leafStyles[randomInt(0, leafStyles.length - 1)];
-      const startCoord: Coordinate = {
-        x: this.stemWidth,
-        y: randomInt(-leafStyle.length * 2, -this.stemHeight * 0.9),
-      };
-      console.log(leafStyle.length, startCoord.y);
+      const slotStart = Math.floor(minY - i * slotHeight);
+      const y = randomInt(slotStart, slotStart - slotHeight);
+
+      const startCoord: Coordinate = { x: this.stemWidth, y };
+
+      console.log(minY, maxY, slotHeight, slotStart);
 
       const leafColorMap = ["transparent", LEAF.COLORS.LEAF, LEAF.COLORS.VEIN];
       this.leaves.push(
