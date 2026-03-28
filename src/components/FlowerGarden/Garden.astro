@@ -1,0 +1,58 @@
+<style>
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    image-rendering: pixelated;
+  }
+</style>
+
+<canvas id="flower-canvas">flowers of various colors and sizes</canvas>
+
+<script>
+  import { Flower } from "./Flower";
+
+  const canvas = document.getElementById("flower-canvas");
+  if (canvas == null || !(canvas instanceof HTMLCanvasElement)) {
+    throw new Error("no flower canvas :<");
+  }
+
+  const ctx = canvas.getContext("2d");
+  if (ctx == null) {
+    throw new Error("no rendering context D:");
+  }
+
+  let canvasWidth: number;
+  let canvasHeight: number;
+  function resize(canvas: HTMLCanvasElement) {
+    canvasWidth = Math.floor(window.innerWidth * devicePixelRatio);
+    canvasHeight = Math.floor(window.innerHeight * devicePixelRatio);
+    canvas.height = canvasHeight;
+    canvas.width = canvasWidth;
+  }
+  resize(canvas);
+  window.addEventListener("resize", () => {
+    resize(canvas);
+  });
+  const flowers: Flower[] = [new Flower({ origin: { x: 500, y: 500 }, ctx })];
+
+  canvas.addEventListener("click", (e) => {
+    flowers.push(new Flower({ origin: { x: e.clientX, y: e.clientY }, ctx }));
+    console.log(e.clientX, e.clientY);
+  });
+
+  function draw() {
+    if (ctx == null) {
+      throw new Error("no rendering context D:");
+    }
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    flowers.forEach((flower) => flower.draw(ctx));
+
+    window.requestAnimationFrame(draw);
+  }
+
+  draw();
+</script>
