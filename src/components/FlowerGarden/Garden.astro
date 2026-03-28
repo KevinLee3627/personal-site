@@ -37,10 +37,14 @@
   window.addEventListener("resize", () => {
     resize(canvas);
   });
-  const flowers: Flower[] = [new Flower({ origin: { x: 500, y: 500 }, ctx })];
+  const defaultFlower = new Flower({ origin: { x: 500, y: 500 }, ctx });
+  defaultFlower.init();
+  const flowers: Flower[] = [defaultFlower];
 
   canvas.addEventListener("click", (e) => {
-    flowers.push(new Flower({ origin: { x: e.clientX, y: e.clientY }, ctx }));
+    const flower = new Flower({ origin: { x: e.clientX, y: e.clientY }, ctx });
+    flower.init();
+    flowers.push(flower);
     console.log(e.clientX, e.clientY);
   });
 

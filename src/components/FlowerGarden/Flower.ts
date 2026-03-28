@@ -1,49 +1,10 @@
-const STEM = {
-  COLORS: { STEM: "#2ACF3B" },
-  WIDTH: { MIN: 2, MAX: 2 },
-  HEIGHT: { MIN: 30, MAX: 60 },
-};
+import { leafBitmaps, type Bitmap } from "./bitmaps";
+import { LEAF, STEM } from "./constants";
 
-const LEAF = {
-  COLORS: {
-    LEAF: "rgb(13, 168, 47)",
-    VEIN: "rgb(8, 75, 22)",
-  },
-};
-
-// artisanal, hand-crafted bitmaps
-const leafMappings = {
-  straight: [
-    [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 0, 0, 0, 0],
-    [0, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 0],
-    [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1],
-    [0, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 0],
-    [0, 0, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-  ],
-  droop: [
-    [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-    [0, 0, 1, 1, 2, 2, 2, 1, 1, 1, 0, 0],
-    [0, 1, 1, 2, 1, 1, 1, 2, 1, 1, 0, 0],
-    [0, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 0],
-    [1, 1, 1, 0, 0, 0, 0, 1, 1, 2, 1, 0],
-    [1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-  ],
-  droop2: [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 1, 2, 2, 2, 2, 2, 1, 1, 0, 0, 0, 1, 0],
-    [0, 0, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 0],
-    [0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 2, 2, 2, 1, 1, 0],
-    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ],
+const randomInt = (min: number, max: number) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor((max - min + 1) * Math.random()) + min;
 };
 
 interface Coordinate {
@@ -56,22 +17,44 @@ export interface FlowerParams {
   ctx: CanvasRenderingContext2D;
 }
 
-const randomInt = (min: number, max: number) =>
-  Math.floor((max - min + 1) * Math.random()) + min;
+interface LeafParams {
+  leafStyle: Bitmap;
+  startCoord: Coordinate;
+  colorMap: string[];
+  ctx: CanvasRenderingContext2D;
+}
+
+class Leaf {
+  leafStyle: Bitmap;
+  startCoord: Coordinate;
+  colorMap: string[];
+  ctx: CanvasRenderingContext2D;
+  constructor({ leafStyle, startCoord, colorMap, ctx }: LeafParams) {
+    this.leafStyle = leafStyle;
+    this.startCoord = startCoord;
+    this.colorMap = colorMap;
+    this.ctx = ctx;
+  }
+
+  public draw() {}
+}
 
 export class Flower {
-  // The origin is defined as the base of the stem.
+  // the origin is defined as the base of the stem!
   origin: Coordinate;
   ctx: CanvasRenderingContext2D;
 
   PX_SCALE = 4;
-
-  stemWidth = randomInt(STEM.WIDTH.MIN, STEM.WIDTH.MAX);
-  stemHeight = randomInt(STEM.HEIGHT.MIN, STEM.HEIGHT.MAX);
+  stemHeight: number;
+  stemWidth: number;
+  leaves: Leaf[] = [];
 
   constructor(params: FlowerParams) {
     this.origin = params.origin;
     this.ctx = params.ctx;
+
+    this.stemWidth = randomInt(STEM.WIDTH.MIN, STEM.WIDTH.MAX);
+    this.stemHeight = randomInt(STEM.HEIGHT.MIN, STEM.HEIGHT.MAX);
   }
 
   private pxCoord(num: number) {
@@ -96,12 +79,12 @@ export class Flower {
     );
   }
 
-  // Given a mapping of pixel coordinates, draw that shape according to the map.
-  private pxMap(pxMap: number[][], startCoord: Coordinate, colorMap: string[]) {
+  // given a mapping of pixel coordinates, draw that shape according to the map.
+  private pxMap(bitmap: Bitmap, startCoord: Coordinate, colorMap: string[]) {
     this.ctx.save();
 
     this.ctx.translate(this.pxCoord(startCoord.x), this.pxCoord(startCoord.y));
-    pxMap.forEach((row, rowIdx) => {
+    bitmap.forEach((row, rowIdx) => {
       row.forEach((cell, cellIdx) => {
         this.ctx.fillStyle = colorMap[cell];
         this.px(cellIdx, rowIdx);
@@ -109,6 +92,29 @@ export class Flower {
     });
 
     this.ctx.restore();
+  }
+
+  public init() {
+    const numLeaves = randomInt(LEAF.MIN_AMOUNT, LEAF.MAX_AMOUNT);
+    const leafStyleChoices = Object.values(leafBitmaps);
+
+    for (let i = 0; i <= numLeaves; i++) {
+      const leafStyle =
+        leafStyleChoices[randomInt(0, leafStyleChoices.length - 1)];
+      const startCoord: Coordinate = {
+        x: this.stemWidth,
+        y: randomInt(0, -this.stemHeight),
+      };
+      const leafColorMap = ["transparent", LEAF.COLORS.LEAF, LEAF.COLORS.VEIN];
+      this.leaves.push(
+        new Leaf({
+          leafStyle,
+          startCoord,
+          colorMap: leafColorMap,
+          ctx: this.ctx,
+        }),
+      );
+    }
   }
 
   public draw(ctx: CanvasRenderingContext2D) {
@@ -124,23 +130,14 @@ export class Flower {
 
     ctx.restore();
 
-    // LEAF
+    // LEAVES
     ctx.save();
-
-    this.pxMap(
-      leafMappings.droop2,
-      { x: this.stemWidth, y: -this.stemHeight / 2 },
-      ["transparent", LEAF.COLORS.LEAF, LEAF.COLORS.VEIN],
+    this.leaves.forEach((leaf) =>
+      this.pxMap(leaf.leafStyle, leaf.startCoord, leaf.colorMap),
     );
-
-    this.pxMap(leafMappings.droop, { x: this.stemWidth, y: -this.stemHeight }, [
-      "transparent",
-      LEAF.COLORS.LEAF,
-      LEAF.COLORS.VEIN,
-    ]);
     ctx.restore();
 
-    // Final restore to get rid of the translation to the flower's origin
+    // final restore to get rid of the translation to the flower's origin
     ctx.restore();
   }
 }
