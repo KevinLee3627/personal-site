@@ -1,16 +1,14 @@
 const STEM = {
-  color: "#2acf3b",
-  width: 2,
-  height: 40,
+  COLORS: { STEM: "#2ACF3B" },
+  WIDTH: { MIN: 2, MAX: 2 },
+  HEIGHT: { MIN: 30, MAX: 60 },
 };
 
 const LEAF = {
-  colors: {
-    leaf: "rgb(13, 168, 47)",
-    vein: "rgb(8, 75, 22)",
+  COLORS: {
+    LEAF: "rgb(13, 168, 47)",
+    VEIN: "rgb(8, 75, 22)",
   },
-  width: 12,
-  height: 4,
 };
 
 // artisanal, hand-crafted bitmaps
@@ -58,12 +56,18 @@ export interface FlowerParams {
   ctx: CanvasRenderingContext2D;
 }
 
+const randomInt = (min: number, max: number) =>
+  Math.floor((max - min + 1) * Math.random()) + min;
+
 export class Flower {
   // The origin is defined as the base of the stem.
   origin: Coordinate;
   ctx: CanvasRenderingContext2D;
 
   PX_SCALE = 4;
+
+  stemWidth = randomInt(STEM.WIDTH.MIN, STEM.WIDTH.MAX);
+  stemHeight = randomInt(STEM.HEIGHT.MIN, STEM.HEIGHT.MAX);
 
   constructor(params: FlowerParams) {
     this.origin = params.origin;
@@ -115,24 +119,24 @@ export class Flower {
     // STEM
     ctx.save();
 
-    ctx.fillStyle = STEM.color;
-    this.pxRect(0, 0, STEM.width, -STEM.height);
+    ctx.fillStyle = STEM.COLORS.STEM;
+    this.pxRect(0, 0, this.stemWidth, -this.stemHeight);
 
     ctx.restore();
 
     // LEAF
     ctx.save();
 
-    this.pxMap(leafMappings.droop2, { x: STEM.width, y: -STEM.height / 2 }, [
-      "transparent",
-      LEAF.colors.leaf,
-      LEAF.colors.vein,
-    ]);
+    this.pxMap(
+      leafMappings.droop2,
+      { x: this.stemWidth, y: -this.stemHeight / 2 },
+      ["transparent", LEAF.COLORS.LEAF, LEAF.COLORS.VEIN],
+    );
 
-    this.pxMap(leafMappings.droop, { x: STEM.width, y: -STEM.height }, [
+    this.pxMap(leafMappings.droop, { x: this.stemWidth, y: -this.stemHeight }, [
       "transparent",
-      LEAF.colors.leaf,
-      LEAF.colors.vein,
+      LEAF.COLORS.LEAF,
+      LEAF.COLORS.VEIN,
     ]);
     ctx.restore();
 
