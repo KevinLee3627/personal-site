@@ -27,17 +27,11 @@ interface LeafParams {
   ctx: CanvasRenderingContext2D;
 }
 
-class Leaf {
+interface Leaf {
   leafStyle: Bitmap;
   startCoord: Coordinate;
   colorMap: string[];
   ctx: CanvasRenderingContext2D;
-  constructor({ leafStyle, startCoord, colorMap, ctx }: LeafParams) {
-    this.leafStyle = leafStyle;
-    this.startCoord = startCoord;
-    this.colorMap = colorMap;
-    this.ctx = ctx;
-  }
 }
 
 export class Flower {
@@ -113,14 +107,12 @@ export class Flower {
       console.log(minY, maxY, slotHeight, slotStart);
 
       const leafColorMap = ["transparent", LEAF.COLORS.LEAF, LEAF.COLORS.VEIN];
-      this.leaves.push(
-        new Leaf({
-          leafStyle,
-          startCoord,
-          colorMap: leafColorMap,
-          ctx: this.ctx,
-        }),
-      );
+      this.leaves.push({
+        leafStyle,
+        startCoord,
+        colorMap: leafColorMap,
+        ctx: this.ctx,
+      });
     }
   }
 
