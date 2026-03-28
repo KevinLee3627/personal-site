@@ -10,5 +10,5 @@ export const LEAF = {
     VEIN: "rgb(8, 75, 22)",
   },
   MIN_AMOUNT: 2,
-  MAX_AMOUNT: 3,
+  MAX_AMOUNT: 5,
 };

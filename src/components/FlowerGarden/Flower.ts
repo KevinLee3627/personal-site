@@ -10,27 +10,29 @@ const randomInt = (min: number, max: number) => {
 const clamp = (num: number, min: number, max: number) =>
   Math.max(Math.min(min, num), max);
 
+function randomEnumValue<T extends object>(e: T): T[keyof T] {
+  const values = Object.values(e);
+  return values[randomInt(0, values.length - 1)];
+}
+
 interface Coordinate {
   x: number;
   y: number;
 }
 
-export interface FlowerParams {
-  origin: Coordinate;
-  ctx: CanvasRenderingContext2D;
-}
-
-interface LeafParams {
-  leafStyle: Bitmap;
-  startCoord: Coordinate;
-  colorMap: string[];
-  ctx: CanvasRenderingContext2D;
+enum LeafDirection {
+  LEFT = "LEFT",
+  RIGHT = "RIGHT",
 }
 
 interface Leaf {
   leafStyle: Bitmap;
   startCoord: Coordinate;
   colorMap: string[];
+}
+
+interface FlowerParams {
+  origin: Coordinate;
   ctx: CanvasRenderingContext2D;
 }
 
@@ -98,20 +100,24 @@ export class Flower {
       // How do we make sure leaves are not too close to each other?
       // Guarantee space between leaves
       // Something like sequencer project - 'quantize' spots a leaf can go
-      const leafStyle = leafStyles[randomInt(0, leafStyles.length - 1)];
       const slotStart = Math.floor(minY - i * slotHeight);
-      const y = randomInt(slotStart, slotStart - slotHeight);
+      const y = randomInt(slotStart - slotHeight, slotStart);
+      let x = this.stemWidth;
+      let leafStyle = leafStyles[randomInt(0, leafStyles.length - 1)];
 
-      const startCoord: Coordinate = { x: this.stemWidth, y };
+      const direction = randomEnumValue(LeafDirection);
+      if (direction === LeafDirection.LEFT) {
+        leafStyle = structuredClone(leafStyle).map((row) => [...row].reverse());
+        x = -leafStyle[0].length;
+      }
 
-      console.log(minY, maxY, slotHeight, slotStart);
+      const startCoord: Coordinate = { x, y };
 
       const leafColorMap = ["transparent", LEAF.COLORS.LEAF, LEAF.COLORS.VEIN];
       this.leaves.push({
         leafStyle,
         startCoord,
         colorMap: leafColorMap,
-        ctx: this.ctx,
       });
     }
   }
