@@ -7,6 +7,9 @@ const randomInt = (min: number, max: number) => {
   return Math.floor((max - min + 1) * Math.random()) + min;
 };
 
+const clamp = (num: number, min: number, max: number) =>
+  Math.max(Math.min(min, num), max);
+
 interface Coordinate {
   x: number;
   y: number;
@@ -94,17 +97,15 @@ export class Flower {
     this.ctx.restore();
   }
 
-  public init() {
-    const numLeaves = randomInt(LEAF.MIN_AMOUNT, LEAF.MAX_AMOUNT);
-    const leafStyleChoices = Object.values(leafBitmaps);
-
-    for (let i = 0; i <= numLeaves; i++) {
-      const leafStyle =
-        leafStyleChoices[randomInt(0, leafStyleChoices.length - 1)];
+  private generateLeaves(amt: number, leafStyles: Bitmap[]) {
+    for (let i = 0; i <= amt; i++) {
+      const leafStyle = leafStyles[randomInt(0, leafStyles.length - 1)];
       const startCoord: Coordinate = {
         x: this.stemWidth,
-        y: randomInt(0, -this.stemHeight),
+        y: randomInt(-leafStyle.length * 2, -this.stemHeight * 0.9),
       };
+      console.log(leafStyle.length, startCoord.y);
+
       const leafColorMap = ["transparent", LEAF.COLORS.LEAF, LEAF.COLORS.VEIN];
       this.leaves.push(
         new Leaf({
@@ -115,6 +116,13 @@ export class Flower {
         }),
       );
     }
+  }
+
+  public init() {
+    const numLeaves = randomInt(LEAF.MIN_AMOUNT, LEAF.MAX_AMOUNT);
+    const leafStyleChoices = Object.values(leafBitmaps);
+
+    this.generateLeaves(numLeaves, leafStyleChoices);
   }
 
   public draw(ctx: CanvasRenderingContext2D) {
