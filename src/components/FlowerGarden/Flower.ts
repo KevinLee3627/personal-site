@@ -1,5 +1,5 @@
 import { flowerBitMaps, leafBitmaps, type Bitmap } from "./bitmaps";
-import { FLOWER, LEAF, STEM } from "./constants";
+import { FLOWER, LEAF, STEM, type FlowerName } from "./constants";
 
 const randomInt = (min: number, max: number) => {
   min = Math.ceil(min);
@@ -44,6 +44,8 @@ export class Flower {
   stemHeight: number;
   stemWidth: number;
   leaves: Leaf[] = [];
+  flowerStyleName: FlowerName;
+  flowerStyleBitmap: Bitmap = [];
 
   constructor(params: FlowerParams) {
     this.origin = params.origin;
@@ -51,6 +53,11 @@ export class Flower {
 
     this.stemWidth = randomInt(STEM.WIDTH.MIN, STEM.WIDTH.MAX);
     this.stemHeight = randomInt(STEM.HEIGHT.MIN, STEM.HEIGHT.MAX);
+
+    const flowerStyleChoices = Object.entries(flowerBitMaps);
+    const flowerStyleChoice = flowerStyleChoices[randomInt(0, flowerStyleChoices.length - 1)];
+    this.flowerStyleName = flowerStyleChoice[0] as FlowerName;
+    this.flowerStyleBitmap = flowerStyleChoice[1];
   }
 
   private pxCoord(num: number) {
@@ -143,13 +150,12 @@ export class Flower {
     // FLOWER
     ctx.save();
 
+    const flowerX = -flowerBitMaps[this.flowerStyleName][0].length / 2 + this.stemWidth / 2;
+    const flowerY = -this.stemHeight - flowerBitMaps[this.flowerStyleName].length + 4;
     this.pxMap(
-      flowerBitMaps.yellow,
-      {
-        x: -flowerBitMaps.rose[0].length / 2 + this.stemWidth / 2,
-        y: -this.stemHeight - flowerBitMaps.rose.length,
-      },
-      FLOWER.COLORS.YELLOW,
+      this.flowerStyleBitmap,
+      { x: flowerX, y: flowerY },
+      FLOWER.COLORS[this.flowerStyleName],
     );
 
     ctx.restore();

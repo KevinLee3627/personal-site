@@ -10,6 +10,14 @@ export const LEAF = {
   MAX_AMOUNT: 5,
 };
 
+// export enum FLOWER_NAME {
+//   ROSE = "ROSE",
+//   LAVENDER = "LAVENDER",
+//   YELLOW = "YELLOW",
+// }
+
+export type FlowerName = "ROSE" | "LAVENDER" | "YELLOW";
+
 export const FLOWER = {
   COLORS: {
     ROSE: ["transparent", "black", "#A42121"],
