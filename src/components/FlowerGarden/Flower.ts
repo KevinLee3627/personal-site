@@ -1,5 +1,6 @@
 import { flowerBitMaps, leafBitmaps, type Bitmap } from "./bitmaps";
 import { FLOWER, LEAF, STEM, type FlowerName } from "./constants";
+import { PixelDrawing, type Coordinate } from "./PixelDrawing";
 
 const randomInt = (min: number, max: number) => {
   min = Math.ceil(min);
@@ -7,16 +8,9 @@ const randomInt = (min: number, max: number) => {
   return Math.floor((max - min + 1) * Math.random()) + min;
 };
 
-const clamp = (num: number, min: number, max: number) => Math.max(Math.min(min, num), max);
-
 function randomEnumValue<T extends object>(e: T): T[keyof T] {
   const values = Object.values(e);
   return values[randomInt(0, values.length - 1)];
-}
-
-interface Coordinate {
-  x: number;
-  y: number;
 }
 
 enum LeafDirection {
@@ -35,12 +29,7 @@ interface FlowerParams {
   ctx: CanvasRenderingContext2D;
 }
 
-export class Flower {
-  // the origin is defined as the base of the stem!
-  origin: Coordinate;
-  ctx: CanvasRenderingContext2D;
-
-  PX_SCALE = 4;
+export class Flower extends PixelDrawing {
   stemHeight: number;
   stemWidth: number;
   leaves: Leaf[] = [];
@@ -48,6 +37,7 @@ export class Flower {
   flowerStyleBitmap: Bitmap = [];
 
   constructor(params: FlowerParams) {
+    super(params.ctx, params.origin);
     this.origin = params.origin;
     this.ctx = params.ctx;
 
@@ -58,38 +48,6 @@ export class Flower {
     const flowerStyleChoice = flowerStyleChoices[randomInt(0, flowerStyleChoices.length - 1)];
     this.flowerStyleName = flowerStyleChoice[0] as FlowerName;
     this.flowerStyleBitmap = flowerStyleChoice[1];
-  }
-
-  private pxCoord(num: number) {
-    return Math.round(num * this.PX_SCALE);
-  }
-
-  private px(x: number, y: number) {
-    this.ctx.fillRect(this.pxCoord(x), this.pxCoord(y), this.PX_SCALE, this.PX_SCALE);
-  }
-
-  private pxRect(x: number, y: number, width: number, height: number) {
-    this.ctx.fillRect(
-      this.pxCoord(x),
-      this.pxCoord(y),
-      width * this.PX_SCALE,
-      height * this.PX_SCALE,
-    );
-  }
-
-  // given a mapping of pixel coordinates, draw that shape according to the map.
-  private pxMap(bitmap: Bitmap, startCoord: Coordinate, colorMap: string[]) {
-    this.ctx.save();
-
-    this.ctx.translate(this.pxCoord(startCoord.x), this.pxCoord(startCoord.y));
-    bitmap.forEach((row, rowIdx) => {
-      row.forEach((cell, cellIdx) => {
-        this.ctx.fillStyle = colorMap[cell];
-        this.px(cellIdx, rowIdx);
-      });
-    });
-
-    this.ctx.restore();
   }
 
   private generateLeaves(amt: number, leafStyles: Bitmap[]) {
