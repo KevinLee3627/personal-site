@@ -87,26 +87,26 @@ export class Flower extends PixelDrawing {
     this.generateLeaves(numLeaves, leafStyleChoices);
   }
 
-  public draw(ctx: CanvasRenderingContext2D) {
+  public draw() {
     // Everything is now drawn from the origin
-    ctx.save();
-    ctx.translate(this.origin.x, this.origin.y);
+    this.ctx.save();
+    this.ctx.translate(this.origin.x, this.origin.y);
 
     // STEM
-    ctx.save();
+    this.ctx.save();
 
-    ctx.fillStyle = STEM.COLORS.STEM;
+    this.ctx.fillStyle = STEM.COLORS.STEM;
     this.pxRect(0, 0, this.stemWidth, -this.stemHeight);
 
-    ctx.restore();
+    this.ctx.restore();
 
     // LEAVES
-    ctx.save();
+    this.ctx.save();
     this.leaves.forEach((leaf) => this.pxMap(leaf.leafStyle, leaf.startCoord, leaf.colorMap));
-    ctx.restore();
+    this.ctx.restore();
 
     // FLOWER
-    ctx.save();
+    this.ctx.save();
 
     const flowerX = -flowerBitMaps[this.flowerStyleName][0].length / 2 + this.stemWidth / 2;
     const flowerY = -this.stemHeight - flowerBitMaps[this.flowerStyleName].length + 8;
@@ -116,9 +116,9 @@ export class Flower extends PixelDrawing {
       FLOWER.COLORS[this.flowerStyleName],
     );
 
-    ctx.restore();
+    this.ctx.restore();
 
     // final restore to get rid of the translation to the flower's origin
-    ctx.restore();
+    this.ctx.restore();
   }
 }

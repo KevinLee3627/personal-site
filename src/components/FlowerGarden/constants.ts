@@ -21,3 +21,9 @@ export const FLOWER = {
     LAVENDER: ["transparent", "#7c4399", "#c082e0", "#f5e165", "#501f68", "#2a6e18"],
   },
 };
+
+export const BEE = {
+  COLORS: {
+    BEE: ["transparent", "black", "#d3d1d1", "yellow"],
+  },
+};

@@ -1,3 +1,5 @@
+import { beeBitmap } from "./bitmaps";
+import { BEE } from "./constants";
 import { PixelDrawing, type Coordinate } from "./PixelDrawing";
 
 interface BeeParams {
@@ -10,9 +12,10 @@ export class Bee extends PixelDrawing {
     super(params.ctx, params.origin);
   }
 
-  public draw(ctx: CanvasRenderingContext2D) {
-    ctx.save();
-
-    ctx.restore();
+  public draw() {
+    this.ctx.save();
+    this.ctx.translate(this.origin.x, this.origin.y);
+    this.pxMap(beeBitmap, this.origin, BEE.COLORS.BEE);
+    this.ctx.restore();
   }
 }

@@ -14,6 +14,7 @@
 <canvas id="flower-canvas">flowers of various colors and sizes</canvas>
 
 <script>
+  import { Bee } from "./Bee";
   import { Flower } from "./Flower";
 
   const canvas = document.getElementById("flower-canvas");
@@ -42,6 +43,8 @@
   // defaultFlower.init();
   const flowers: Flower[] = [];
 
+  const bee = new Bee({ origin: { x: 200, y: 200 }, ctx });
+
   window.addEventListener("click", (e) => {
     if ((e.target as Element).closest("a")) return;
     const flower = new Flower({ origin: { x: e.clientX, y: e.clientY }, ctx });
@@ -54,7 +57,8 @@
       throw new Error("no rendering context D:");
     }
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    flowers.forEach((flower) => flower.draw(ctx));
+    flowers.forEach((flower) => flower.draw());
+    bee.draw();
 
     window.requestAnimationFrame(draw);
   }
