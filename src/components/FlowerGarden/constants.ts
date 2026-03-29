@@ -5,10 +5,14 @@ export const STEM = {
 };
 
 export const LEAF = {
-  COLORS: {
-    LEAF: "rgb(13, 168, 47)",
-    VEIN: "rgb(8, 75, 22)",
-  },
+  COLORS: ["transparent", "rgb(13, 168, 47)", "rgb(8, 75, 22)"],
   MIN_AMOUNT: 2,
   MAX_AMOUNT: 5,
+};
+
+export const FLOWER = {
+  COLORS: {
+    ROSE: ["transparent", "black", "#A42121"],
+    LAVENDER: ["transparent", "#7c4399", "#c082e0", "#f5e165"],
+  },
 };

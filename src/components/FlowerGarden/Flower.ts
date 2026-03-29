@@ -1,5 +1,5 @@
-import { leafBitmaps, type Bitmap } from "./bitmaps";
-import { LEAF, STEM } from "./constants";
+import { flowerBitMaps, leafBitmaps, type Bitmap } from "./bitmaps";
+import { FLOWER, LEAF, STEM } from "./constants";
 
 const randomInt = (min: number, max: number) => {
   min = Math.ceil(min);
@@ -7,8 +7,7 @@ const randomInt = (min: number, max: number) => {
   return Math.floor((max - min + 1) * Math.random()) + min;
 };
 
-const clamp = (num: number, min: number, max: number) =>
-  Math.max(Math.min(min, num), max);
+const clamp = (num: number, min: number, max: number) => Math.max(Math.min(min, num), max);
 
 function randomEnumValue<T extends object>(e: T): T[keyof T] {
   const values = Object.values(e);
@@ -59,12 +58,7 @@ export class Flower {
   }
 
   private px(x: number, y: number) {
-    this.ctx.fillRect(
-      this.pxCoord(x),
-      this.pxCoord(y),
-      this.PX_SCALE,
-      this.PX_SCALE,
-    );
+    this.ctx.fillRect(this.pxCoord(x), this.pxCoord(y), this.PX_SCALE, this.PX_SCALE);
   }
 
   private pxRect(x: number, y: number, width: number, height: number) {
@@ -113,11 +107,10 @@ export class Flower {
 
       const startCoord: Coordinate = { x, y };
 
-      const leafColorMap = ["transparent", LEAF.COLORS.LEAF, LEAF.COLORS.VEIN];
       this.leaves.push({
         leafStyle,
         startCoord,
-        colorMap: leafColorMap,
+        colorMap: LEAF.COLORS,
       });
     }
   }
@@ -144,9 +137,21 @@ export class Flower {
 
     // LEAVES
     ctx.save();
-    this.leaves.forEach((leaf) =>
-      this.pxMap(leaf.leafStyle, leaf.startCoord, leaf.colorMap),
+    this.leaves.forEach((leaf) => this.pxMap(leaf.leafStyle, leaf.startCoord, leaf.colorMap));
+    ctx.restore();
+
+    // FLOWER
+    ctx.save();
+
+    this.pxMap(
+      flowerBitMaps.lavender,
+      {
+        x: -flowerBitMaps.rose[0].length / 2 + this.stemWidth / 2,
+        y: -this.stemHeight - flowerBitMaps.rose.length,
+      },
+      FLOWER.COLORS.LAVENDER,
     );
+
     ctx.restore();
 
     // final restore to get rid of the translation to the flower's origin
