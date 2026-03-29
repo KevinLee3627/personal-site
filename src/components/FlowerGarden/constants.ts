@@ -16,12 +16,12 @@ export const LEAF = {
 //   YELLOW = "YELLOW",
 // }
 
-export type FlowerName = "ROSE" | "ORANGE" | "YELLOW" | "CYAN" | "LAVENDER";
+export type FlowerName = "ROSE" | "PINK" | "YELLOW" | "CYAN" | "LAVENDER";
 
 export const FLOWER = {
   COLORS: {
     ROSE: ["transparent", "black", "#A42121"],
-    ORANGE: ["transparent", "#9e0b97", "#df5ed8", "#e0c723"],
+    PINK: ["transparent", "#9e0b97", "#df5ed8", "#e0c723"],
     YELLOW: ["transparent", "#cfb411", "#ffdb02", "#ae6f2f"],
     CYAN: ["transparent", "#1b7d76", "#30e0d4"],
     LAVENDER: ["transparent", "#7c4399", "#c082e0", "#f5e165", "#501f68", "#2a6e18"],
