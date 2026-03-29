@@ -152,12 +152,11 @@ export class Flower {
 
     const flowerX = -flowerBitMaps[this.flowerStyleName][0].length / 2 + this.stemWidth / 2;
     const flowerY = -this.stemHeight - flowerBitMaps[this.flowerStyleName].length + 8;
-    // this.pxMap(
-    //   this.flowerStyleBitmap,
-    //   { x: flowerX, y: flowerY },
-    //   FLOWER.COLORS[this.flowerStyleName],
-    // );
-    this.pxMap(flowerBitMaps.LAVENDER, { x: flowerX, y: flowerY }, FLOWER.COLORS.LAVENDER);
+    this.pxMap(
+      this.flowerStyleBitmap,
+      { x: flowerX, y: flowerY },
+      FLOWER.COLORS[this.flowerStyleName],
+    );
 
     ctx.restore();
 

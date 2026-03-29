@@ -38,9 +38,9 @@
   window.addEventListener("resize", () => {
     resize(canvas);
   });
-  const defaultFlower = new Flower({ origin: { x: 500, y: 500 }, ctx });
-  defaultFlower.init();
-  const flowers: Flower[] = [defaultFlower];
+  // const defaultFlower = new Flower({ origin: { x: 500, y: 500 }, ctx });
+  // defaultFlower.init();
+  const flowers: Flower[] = [];
 
   window.addEventListener("click", (e) => {
     if ((e.target as Element).closest("a")) return;
