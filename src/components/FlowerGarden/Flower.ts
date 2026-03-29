@@ -95,7 +95,7 @@ export class Flower {
   private generateLeaves(amt: number, leafStyles: Bitmap[]) {
     // STOP FORGETTING NUMBERS ARE NEGATIVE...CANVAS!!!
     const minY = Math.floor(-this.stemHeight * 0.25);
-    const maxY = Math.floor(-this.stemHeight * 0.9);
+    const maxY = Math.floor(-this.stemHeight * 0.8);
     const slotHeight = Math.floor(Math.abs((maxY - minY) / amt));
     for (let i = 0; i < amt; i++) {
       // How do we make sure leaves are not too close to each other?
@@ -151,12 +151,13 @@ export class Flower {
     ctx.save();
 
     const flowerX = -flowerBitMaps[this.flowerStyleName][0].length / 2 + this.stemWidth / 2;
-    const flowerY = -this.stemHeight - flowerBitMaps[this.flowerStyleName].length + 4;
-    this.pxMap(
-      this.flowerStyleBitmap,
-      { x: flowerX, y: flowerY },
-      FLOWER.COLORS[this.flowerStyleName],
-    );
+    const flowerY = -this.stemHeight - flowerBitMaps[this.flowerStyleName].length + 8;
+    // this.pxMap(
+    //   this.flowerStyleBitmap,
+    //   { x: flowerX, y: flowerY },
+    //   FLOWER.COLORS[this.flowerStyleName],
+    // );
+    this.pxMap(flowerBitMaps.LAVENDER, { x: flowerX, y: flowerY }, FLOWER.COLORS.LAVENDER);
 
     ctx.restore();
 
