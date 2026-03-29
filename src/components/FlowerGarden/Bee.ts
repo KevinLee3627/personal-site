@@ -1,15 +1,20 @@
 import { beeBitmap } from "./bitmaps";
 import { BEE } from "./constants";
+import type { Flower } from "./Flower";
 import { PixelDrawing, type Coordinate } from "./PixelDrawing";
 
 interface BeeParams {
   ctx: CanvasRenderingContext2D;
   origin: Coordinate;
+  flowers: Flower[];
 }
 
 export class Bee extends PixelDrawing {
+  flowers: Flower[];
+
   constructor(params: BeeParams) {
     super(params.ctx, params.origin);
+    this.flowers = params.flowers;
   }
 
   public draw() {

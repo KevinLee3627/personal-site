@@ -43,7 +43,7 @@
   // defaultFlower.init();
   const flowers: Flower[] = [];
 
-  const bee = new Bee({ origin: { x: 200, y: 200 }, ctx });
+  const bee = new Bee({ origin: { x: 200, y: 200 }, ctx, flowers });
 
   window.addEventListener("click", (e) => {
     if ((e.target as Element).closest("a")) return;
