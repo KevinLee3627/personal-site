@@ -144,12 +144,12 @@ export class Flower {
     ctx.save();
 
     this.pxMap(
-      flowerBitMaps.lavender,
+      flowerBitMaps.yellow,
       {
         x: -flowerBitMaps.rose[0].length / 2 + this.stemWidth / 2,
         y: -this.stemHeight - flowerBitMaps.rose.length,
       },
-      FLOWER.COLORS.LAVENDER,
+      FLOWER.COLORS.YELLOW,
     );
 
     ctx.restore();
