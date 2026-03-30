@@ -12,7 +12,7 @@ interface BeeParams {
 
 export class Bee extends PixelDrawing {
   flowers: Flower[];
-  nextTarget: Flower | null;
+  nextFlower: Flower | null;
   speed: number = 3;
   landingTimer: number = 0; // # of frames bee has stayed at a flower
   landingDuration: number = 60;
@@ -20,21 +20,25 @@ export class Bee extends PixelDrawing {
   constructor(params: BeeParams) {
     super(params.ctx, params.origin);
     this.flowers = params.flowers;
-    this.nextTarget = this.flowers[randomInt(0, this.flowers.length - 1)];
+    this.nextFlower = this.flowers[randomInt(0, this.flowers.length - 1)];
   }
 
   private pickFlower(): Flower {
     let candidates: Flower[];
-    if (this.nextTarget == null) {
+    if (this.nextFlower == null) {
       candidates = this.flowers;
     } else {
-      candidates = this.flowers.filter((flower) => flower !== this.nextTarget);
+      candidates = this.flowers.filter((flower) => flower !== this.nextFlower);
     }
-    return this.flowers[randomInt(0, this.flowers.length - 1)];
+    return candidates[randomInt(0, candidates.length - 1)];
   }
 
   private setLandingDuration() {
     this.landingDuration = randomInt(BEE.LANDING_DURATION.MIN, BEE.LANDING_DURATION.MAX);
+  }
+
+  private resetLandingTimer() {
+    this.landingTimer = 0;
   }
 
   private update() {
@@ -43,14 +47,19 @@ export class Bee extends PixelDrawing {
     }
 
     // 1: pick a random flower (should not be same as last visited flower)
-    if (this.nextTarget == null) {
-      this.nextTarget = this.pickFlower();
+    if (this.nextFlower == null) {
+      this.nextFlower = this.pickFlower();
     }
 
     // 2: move to that flower (with some variance)
     // To move to a flower...
-    const dx = this.origin.x - this.nextTarget.origin.x;
-    const dy = this.origin.y - this.nextTarget.origin.y;
+    console.log(beeBitmap[0].length);
+
+    // set the target to somewhre 'around' the flower
+    // const targetXMin = this.nextFlower.origin.x - this.pxCoord(beeBitmap[0].length);
+    // const targetXMax = this.nextFlower.origin.x + this.pxCoord(beeBitmap[0].length);
+    const dx = this.origin.x - this.nextFlower.origin.x;
+    const dy = this.origin.y - this.nextFlower.origin.y;
     // increment origin.x and y by the SPEED until x and/or y match the target origin
     // math.min clamps speed so there is no 'jitter'
     this.origin.x -= Math.sign(dx) * Math.min(this.speed, Math.abs(dx));
@@ -61,9 +70,9 @@ export class Bee extends PixelDrawing {
       this.landingTimer++;
 
       if (this.landingTimer >= this.landingDuration) {
-        this.landingTimer = 0;
+        this.resetLandingTimer();
         this.setLandingDuration();
-        this.nextTarget = this.pickFlower();
+        this.nextFlower = this.pickFlower();
       }
     }
 
