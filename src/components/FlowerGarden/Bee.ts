@@ -13,7 +13,9 @@ interface BeeParams {
 export class Bee extends PixelDrawing {
   flowers: Flower[];
   nextTarget: Flower | null;
-  speed: number = 1;
+  speed: number = 3;
+  landingTimer: number = 0; // # of frames bee has stayed at a flower
+  landingDuration: number = 60;
 
   constructor(params: BeeParams) {
     super(params.ctx, params.origin);
@@ -31,14 +33,16 @@ export class Bee extends PixelDrawing {
     return this.flowers[randomInt(0, this.flowers.length - 1)];
   }
 
+  private setLandingDuration() {
+    this.landingDuration = randomInt(BEE.LANDING_DURATION.MIN, BEE.LANDING_DURATION.MAX);
+  }
+
   private update() {
     if (this.flowers.length === 0) {
       return;
     }
 
     // 1: pick a random flower (should not be same as last visited flower)
-    // 3: sit at that flower for a random amount of time
-    // 4. repeat
     if (this.nextTarget == null) {
       this.nextTarget = this.pickFlower();
     }
@@ -47,10 +51,21 @@ export class Bee extends PixelDrawing {
     // To move to a flower...
     const dx = this.origin.x - this.nextTarget.origin.x;
     const dy = this.origin.y - this.nextTarget.origin.y;
-    // increment origin.x and y by the SPEED untill x and/or y match the target origin
+    // increment origin.x and y by the SPEED until x and/or y match the target origin
+    // math.min clamps speed so there is no 'jitter'
+    this.origin.x -= Math.sign(dx) * Math.min(this.speed, Math.abs(dx));
+    this.origin.y -= Math.sign(dy) * Math.min(this.speed, Math.abs(dy));
 
-    this.origin.x -= Math.sign(dx) * this.speed;
-    this.origin.y -= Math.sign(dy) * this.speed;
+    // 3: sit at that flower for a random amount of time
+    if (dx === 0 && dy === 0) {
+      this.landingTimer++;
+
+      if (this.landingTimer >= this.landingDuration) {
+        this.landingTimer = 0;
+        this.setLandingDuration();
+        this.nextTarget = this.pickFlower();
+      }
+    }
 
     this.ctx.translate(this.origin.x, this.origin.y);
   }

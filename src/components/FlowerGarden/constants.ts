@@ -26,4 +26,8 @@ export const BEE = {
   COLORS: {
     BEE: ["transparent", "black", "#d3d1d1", "yellow"],
   },
+  LANDING_DURATION: {
+    MIN: 90,
+    MAX: 240,
+  },
 };
