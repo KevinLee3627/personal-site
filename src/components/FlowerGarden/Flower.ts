@@ -1,17 +1,7 @@
+import { randomEnumValue, randomInt } from "../../util";
 import { flowerBitMaps, leafBitmaps, type Bitmap } from "./bitmaps";
 import { FLOWER, LEAF, STEM, type FlowerName } from "./constants";
 import { PixelDrawing, type Coordinate } from "./PixelDrawing";
-
-const randomInt = (min: number, max: number) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor((max - min + 1) * Math.random()) + min;
-};
-
-function randomEnumValue<T extends object>(e: T): T[keyof T] {
-  const values = Object.values(e);
-  return values[randomInt(0, values.length - 1)];
-}
 
 enum LeafDirection {
   LEFT = "LEFT",

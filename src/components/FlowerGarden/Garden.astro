@@ -43,7 +43,7 @@
   // defaultFlower.init();
   const flowers: Flower[] = [];
 
-  const bee = new Bee({ origin: { x: 200, y: 200 }, ctx, flowers });
+  const bees: Bee[] = [];
 
   window.addEventListener("click", (e) => {
     if ((e.target as Element).closest("a")) return;
@@ -58,7 +58,12 @@
     }
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     flowers.forEach((flower) => flower.draw());
-    bee.draw();
+    if (flowers.length === 1 && bees.length === 0) {
+      const bee = new Bee({ origin: { x: 500, y: 500 }, ctx, flowers });
+
+      bees.push(bee);
+    }
+    bees.forEach((bee) => bee.draw());
 
     window.requestAnimationFrame(draw);
   }
