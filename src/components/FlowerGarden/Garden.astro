@@ -16,6 +16,7 @@
 <script>
   import { Bee } from "./Bee";
   import { Flower } from "./Flower";
+  import { FLOWER_TO_BEE_RATIO } from "./constants";
 
   const canvas = document.getElementById("flower-canvas");
   if (canvas == null || !(canvas instanceof HTMLCanvasElement)) {
@@ -58,9 +59,8 @@
     }
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     flowers.forEach((flower) => flower.draw());
-    if (flowers.length === 1 && bees.length === 0) {
+    if (flowers.length > 0 && flowers.length / bees.length > FLOWER_TO_BEE_RATIO) {
       const bee = new Bee({ origin: { x: 500, y: 500 }, ctx, flowers });
-
       bees.push(bee);
     }
     bees.forEach((bee) => bee.draw());

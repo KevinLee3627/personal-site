@@ -31,3 +31,5 @@ export const BEE = {
     MAX: 180,
   },
 };
+
+export const FLOWER_TO_BEE_RATIO = 5;
