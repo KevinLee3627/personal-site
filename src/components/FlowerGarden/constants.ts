@@ -28,6 +28,6 @@ export const BEE = {
   },
   LANDING_DURATION: {
     MIN: 90,
-    MAX: 240,
+    MAX: 180,
   },
 };
